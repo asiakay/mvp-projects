@@ -1,0 +1,21 @@
+---
+const { title, tags, description, link, linkText = "View Case Study" } = Astro.props;
+---
+<div class="bg-gray-900/40 border border-gray-800 hover:border-gray-700/80 p-6 rounded-xl transition duration-300 flex flex-col justify-between">
+  <div>
+    <div class="flex flex-wrap gap-2 mb-3">
+      {tags.map(tag => (
+        <span class="text-[10px] uppercase tracking-wider font-mono bg-gray-800 text-gray-400 px-2 py-0.5 rounded">
+          {tag}
+        </span>
+      ))}
+    </div>
+    <h3 class="text-xl font-bold text-white mb-2">{title}</h3>
+    <p class="text-sm text-gray-400 leading-relaxed mb-6">{description}</p>
+  </div>
+  {link && (
+    <a href={link} class="text-sm text-teal-400 hover:text-teal-300 font-medium inline-flex items-center gap-1 transition">
+      {linkText} <span>→</span>
+    </a>
+  )}
+</div>
