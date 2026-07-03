@@ -24,7 +24,7 @@ jobs:
         run: npx astro build
 
       - name: Deploy to Cloudflare
-        uses: cloudflare/wrangle-action@v3
+        uses: cloudflare/wrangler-action@v3
         with:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           command: deploy
