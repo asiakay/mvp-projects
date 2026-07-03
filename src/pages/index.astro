@@ -1,0 +1,221 @@
+---
+import Layout from '../layouts/Layout.astro';
+import ProjectCard from '../components/ProjectCard.astro';
+---
+<Layout title="Asia Lakay Grady | MVP Projects">
+  <main class="max-w-5xl mx-auto px-6 py-16">
+    
+    <!-- Header/Hero Section -->
+    <header class="border-b border-gray-800/80 pb-12 mb-16">
+      <h1 class="text-4xl md:text-6xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-white via-gray-200 to-gray-500 tracking-tight mb-4">
+        Asia Lakay Grady
+      </h1>
+      <p class="text-xl md:text-2xl text-teal-400 font-light mb-6 tracking-wide">
+        Cooperative Economist, Media Maker & Digital Services Operator
+      </p>
+      <p class="text-base text-gray-400 max-w-3xl leading-relaxed font-light">
+        Building resilient digital ecosystems and telling powerful stories. I design and deploy decentralized, high-performance edge software, and produce studio-grade digital media that grounds complex ideas in lived community experience.
+      </p>
+    </header>
+
+    <!-- TRACK 1: Edge Software Engineering -->
+    <section class="mb-20">
+      <div class="flex items-center gap-4 mb-8">
+        <h2 class="text-2xl md:text-3xl font-bold text-white tracking-tight">Edge Software Engineering</h2>
+        <div class="h-[1px] bg-gray-800 flex-grow"></div>
+      </div>
+      
+      <!-- Flagship: Ayiti of Deeds Case Study -->
+      <div class="bg-gradient-to-br from-gray-900/60 to-black border border-teal-500/20 p-8 rounded-2xl shadow-xl relative overflow-hidden mb-12">
+        <div class="absolute top-0 right-0 bg-teal-500/10 text-teal-400 text-[10px] font-mono tracking-widest uppercase px-4 py-1.5 rounded-bl-xl border-l border-b border-teal-500/20">
+          Featured Case Study
+        </div>
+        
+        <h3 class="text-3xl font-bold text-white mb-2">Ayiti of Deeds</h3>
+        <p class="text-teal-400 font-light text-sm mb-6">Live: <a href="https://deeds-app.asialakaygrady-6d4.workers.dev/" target="_blank" class="underline hover:text-teal-300">deeds-app.asialakaygrady-6d4.workers.dev</a></p>
+        
+        <p class="text-sm text-gray-300 leading-relaxed mb-4">
+          A community-led platform for submitting, verifying, and recognizing grassroots contributions ("deeds") — built on edge infrastructure and taken from concept to live production in a focused three-week sprint.
+        </p>
+        <p class="text-sm text-gray-400 leading-relaxed mb-8 border-l-2 border-teal-500/40 pl-4 italic">
+          Bilingual from day one — English and Haitian Creole (locales/en.json, locales/ht.json) — because the community this serves shouldn't have to wait for a localization phase.
+        </p>
+
+        <!-- Why this architecture -->
+        <div class="mb-10">
+          <h4 class="text-lg font-semibold text-white mb-3">Why this architecture</h4>
+          <p class="text-sm text-gray-400 leading-relaxed mb-6">
+            Most MVPs front-load framework complexity and pay for it in cold starts, dependency churn, and abstraction debt. Deeds takes the opposite bet: a zero-dependency, ultra-lightweight stack optimized for edge latency, with every layer built on web-native primitives.
+          </p>
+          
+          <!-- ASCII Diagram Wrapper -->
+          <pre class="bg-black/40 border border-gray-800/80 p-4 rounded-xl text-xs font-mono text-teal-500/90 overflow-x-auto leading-relaxed mb-8">
+                    [ Edge Runtime ]
+             ┌─────────────────────────────┐
+             │     Cloudflare Workers      │
+             │ (single fetch route handler)│
+             └──────────────┬──────────────┘
+                            │
+            ┌───────────────┴───────────────┐
+            ▼                               ▼
+  [ Data / Persistence ]         [ Auth / Security ]
+ ┌──────────────────────┐       ┌───────────────────────┐
+ │    Cloudflare D1     │       │    Web Crypto API     │
+ │  (SQLite at edge)    │       │ (HMAC-signed session) │
+ └──────────────────────┘       └───────────────────────┘</pre>
+
+          <!-- Architecture Grid/Table -->
+          <div class="overflow-x-auto">
+            <table class="w-full text-left text-sm text-gray-400 border-collapse">
+              <thead>
+                <tr class="border-b border-gray-800 text-xs uppercase font-mono tracking-wider text-gray-400">
+                  <th class="py-3 pr-4">Layer</th>
+                  <th class="py-3 px-4">Choice</th>
+                  <th class="py-3 pl-4">Rationale</th>
+                </tr>
+              </thead>
+              <tbody class="divide-y divide-gray-800/60">
+                <tr>
+                  <td class="py-3 pr-4 font-medium text-white">Runtime & routing</td>
+                  <td class="py-3 px-4 font-mono text-xs text-teal-400">Native JS in a single _worker.js handler — no Hono, Express, or Next.js</td>
+                  <td class="py-3 pl-4 text-xs leading-relaxed">Zero cold starts, zero framework tax; static assets served directly from /public via Workers Assets</td>
+                </tr>
+                <tr>
+                  <td class="py-3 pr-4 font-medium text-white">Persistence</td>
+                  <td class="py-3 px-4 font-mono text-xs text-teal-400">Cloudflare D1 with raw parameterized SQL (db.prepare())</td>
+                  <td class="py-3 pl-4 text-xs leading-relaxed">No ORM translation layer between intent and query; injection-safe by construction</td>
+                </tr>
+                <tr>
+                  <td class="py-3 pr-4 font-medium text-white">Auth</td>
+                  <td class="py-3 px-4 font-mono text-xs text-teal-400">Custom HMAC-signed (HS256) session tokens via the browser-native Web Crypto API</td>
+                  <td class="py-3 pl-4 text-xs leading-relaxed">Sidesteps heavyweight third-party identity providers entirely; delivered over HttpOnly cookies and standard Bearer patterns</td>
+                </tr>
+                <tr>
+                  <td class="py-3 pr-4 font-medium text-white">Frontend</td>
+                  <td class="py-3 px-4 font-mono text-xs text-teal-400">Vanilla multi-page HTML5, native JS modules, localStorage, and inline i18n fallback engine</td>
+                  <td class="py-3 pl-4 text-xs leading-relaxed">Ships immediately, no hydration lag; the audio layer on the landing page serves straight from Workers Assets</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- Feature walkthrough -->
+        <div class="mb-10 border-t border-gray-800/60 pt-8">
+          <h4 class="text-lg font-semibold text-white mb-3">Feature walkthrough</h4>
+          <p class="text-sm text-gray-400 leading-relaxed mb-6">
+            A full demo is in <code class="font-mono text-xs bg-gray-800 px-1.5 py-0.5 rounded text-gray-300">deeds.mp4</code>. Timestamps map to the implementation:
+          </p>
+          
+          <div class="overflow-x-auto">
+            <table class="w-full text-left text-sm text-gray-400 border-collapse">
+              <thead>
+                <tr class="border-b border-gray-800 text-xs uppercase font-mono tracking-wider text-gray-400">
+                  <th class="py-3 pr-4">Feature</th>
+                  <th class="py-3 px-4">Video</th>
+                  <th class="py-3 pl-4">Implementation</th>
+                </tr>
+              </thead>
+              <tbody class="divide-y divide-gray-800/60 text-xs leading-relaxed">
+                <tr>
+                  <td class="py-3 pr-4 font-medium text-white">01 Dynamic assets & i18n</td>
+                  <td class="py-3 px-4 font-mono text-teal-400">0:00–0:03</td>
+                  <td class="py-3 pl-4 text-gray-400">Inline translation engine mapping against static JSON dictionaries; localized titles and integrated background audio with no hydration lag</td>
+                </tr>
+                <tr>
+                  <td class="py-3 pr-4 font-medium text-white">02 Web Crypto auth</td>
+                  <td class="py-3 px-4 font-mono text-teal-400">0:04–0:13</td>
+                  <td class="py-3 pl-4 text-gray-400">Sign-up loop using standard forms; HMAC-signed session tokens generated in the Worker, no external identity provider</td>
+                </tr>
+                <tr>
+                  <td class="py-3 pr-4 font-medium text-white">03 Schema drift & safe mutation</td>
+                  <td class="py-3 px-4 font-mono text-teal-400">0:14–0:54</td>
+                  <td class="py-3 pl-4 text-gray-400">A 16-stage incremental migration path (0001_init.sql → 0016_fix_admin_user.sql); handleCreateDeed uses a cascading data fallback layer so mutations stay safe even as the schema shifted day to day during the sprint</td>
+                </tr>
+                <tr>
+                  <td class="py-3 pr-4 font-medium text-white">04 Role-based guards</td>
+                  <td class="py-3 px-4 font-mono text-teal-400">0:55–1:29</td>
+                  <td class="py-3 pl-4 text-gray-400">All /admin/* routes pass through an explicit requireRole(session, "admin") check before reaching the verification queue — synchronous, inside the standard edge request cycle</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- Deployment & Pipeline -->
+        <div class="mb-10 border-t border-gray-800/60 pt-8">
+          <h4 class="text-lg font-semibold text-white mb-2">Deployment</h4>
+          <p class="text-sm text-gray-400 leading-relaxed mb-4">
+            Continuous deployment through GitHub Actions, straight to the edge — no container virtualization:
+          </p>
+          <div class="bg-gray-950 p-3.5 rounded-xl border border-gray-800 font-mono text-xs text-center text-teal-400 tracking-wide">
+            npm ci → prettier --check → wrangler.toml verification → cloudflare/wrangler-action@v3
+          </div>
+        </div>
+
+        <!-- Known trade-offs -->
+        <div class="border-t border-gray-800/60 pt-8">
+          <h4 class="text-lg font-semibold text-white mb-2">Known trade-offs and the path to production</h4>
+          <p class="text-sm text-gray-400 leading-relaxed mb-4">
+            A three-week sprint means consciously prioritizing velocity over edge-case hardening. These are documented decisions, not oversights:
+          </p>
+          <ul class="text-xs space-y-3 text-gray-400 list-disc pl-4 leading-relaxed">
+            <li><strong class="text-gray-200">Password hashing.</strong> Currently SHA-256 to validate the registration pathway. Before leaving beta: upgrade to an adaptive salted algorithm (Argon2 or scrypt).</li>
+            <li><strong class="text-gray-200">Environment lifecycle.</strong> The backend currently degrades gracefully with console indicators when environment keys are missing. Production pathway: strict validation in the build pipeline that fails the build if secrets are absent.</li>
+            <li><strong class="text-gray-200">Rate limiting.</strong> Endpoints are currently unthrottled to minimize request overhead. Production pathway: Cloudflare Rate Limiting rules mounted over the auth and submission routes.</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Additional Ecosystem Projects Grid -->
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mt-8">
+        <ProjectCard 
+          title="AI-Assisted Grant Discovery Pipeline"
+          tags={["Python", "Cloudflare Workers", "Grants.gov API"]}
+          description="An automated discovery, ingestion, and scoring engine designed to parse the federal Grants.gov API catalog, filtering and weighting community-funding matches via intelligent pipeline processing."
+          link="https://github.com/asiakay/grant-manager-tool-demo"
+          linkText="Explore Pipeline"
+        />
+        <ProjectCard 
+          title="Front Porch Economics Infrastructure"
+          tags={["React", "GitHub Actions", "Vercel Pipelines"]}
+          description="Architected and maintained the continuous integration, testing, and deployment pipelines for a suite of decentralized community econ platforms including commonground and funding-pipeline."
+          link="https://github.com/asiakay"
+          linkText="View Infrastructure"
+        />
+      </div>
+    </section>
+
+    <!-- TRACK 2: Media Production & Narrative Strategy -->
+    <section class="mb-16">
+      <div class="flex items-center gap-4 mb-8">
+        <h2 class="text-2xl md:text-3xl font-bold text-white tracking-tight">Media Production & Narrative</h2>
+        <div class="h-[1px] bg-gray-800 flex-grow"></div>
+      </div>
+      
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <ProjectCard 
+          title="Sovereign Grid (Literary Project)"
+          tags={["Narrative Strategy", "Cooperative Economics"]}
+          description="A multi-generational speculative novel exploring themes of urban cooperative economics, neighborhood infrastructure sovereignty, and structural community resilience."
+        />
+        <ProjectCard 
+          title="Solar Roots Energy Initiative"
+          tags={["Documentary Production", "Workforce Design"]}
+          description="Developing brand identity, media content blueprints, and grant narratives for a green-tech community training collective centered on renewable energy education."
+        />
+        <ProjectCard 
+          title="Studio Technology & Storytelling"
+          tags={["Ross Carbonite", "RØDECaster Pro II", "Final Cut Pro"]}
+          description="Technical execution inside physical media studio environments. Mixing and editing multi-track narrative documentary formats with crisp hardware workflows."
+        />
+      </div>
+    </section>
+
+    <!-- Footer signature block -->
+    <footer class="border-t border-gray-800/80 pt-8 text-center text-xs text-gray-500 font-mono tracking-wide">
+      Built by A.L. Grady — media, technology, and community. Boston, MA.
+    </footer>
+
+  </main>
+</Layout>
